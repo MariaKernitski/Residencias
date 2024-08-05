@@ -1,6 +1,6 @@
 const prompt = require("prompt-sync")()
 
-const {criar, listar, atualizar, remover} = require("./residencias.js");
+const {criar, listar, atualizar, remover} = require("./crud.js");
 
 console.log("Bem vindo(a) ao cadastro de residências!");
 

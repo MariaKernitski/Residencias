@@ -1,10 +1,10 @@
 const prompt = require("prompt-sync")();
 
-const ultimoID = 1;
+let ultimoID = 0;
 
 const residencias = [];
 
-const modelo = () => {
+const modelo = (id = ++ultimoID) => {
     let bairro = prompt("Digite o nome do bairro: ");
     let rua = prompt("Digite o nome da rua: ");
     let numero = Number(prompt("Digite o número da residência: "));
@@ -18,7 +18,7 @@ const modelo = () => {
             break;
         }
         else {
-            moradores.push(morador);;
+            moradores.push(morador);
         }
     }
 
@@ -29,11 +29,11 @@ const modelo = () => {
        moradores != ""
     ) {
         return {
-            ultimoID,
             bairro,
             rua,
             numero,
-            moradores
+            moradores,
+            id
         }
     }
     console.log("Dados inválidos.")
@@ -54,9 +54,9 @@ const listar = () => {
     }
     else {
 
-    residencias.forEach((el, i) => {
+    residencias.forEach((el) => {
         console.log(`
-        Índice ${i + 1}:
+        ID: ${el.id}
         Bairro: ${el.bairro}
         Rua: ${el.rua}
         Número: ${el.numero}
@@ -76,13 +76,14 @@ const atualizar = () => {
 
     listar();
 
-    const indice = prompt("Digite o índice da residência que deseja atualizar: ") - 1;
+    const id = prompt("Digite o ID da residência que deseja atualizar: ");
 
-    if(isNaN(indice) || indice < 0) {
-        console.log("Índice inválido.")
+    if(isNaN(id) || id < 0) {
+        console.log("ID inválido.")
     }
     else {
-        const novo = modelo();
+        const indice = residencias.findIndex(residencia => residencia.id == id)
+        const novo = modelo(id);
         residencias[indice] = novo;
         console.log("Residência atualizada com sucesso!");
     }
@@ -99,12 +100,13 @@ const remover = () => {
 
     listar();
 
-    const indice = prompt("Digite o índice da residência que deseja remover: ") - 1;
+    const id = prompt("Digite o ID da residência que deseja remover: ");
 
-    if(isNaN(indice) || indice < 0) {
-        console.log("Índice inválido.");
+    if(isNaN(id) || id < 0) {
+        console.log("ID inválido.");
     }
     else {
+        const indice = residencias.findIndex(residencia => residencia.id == id)
         residencias.splice(indice, 1);
         console.log("Residência removida com sucesso!");
     }
